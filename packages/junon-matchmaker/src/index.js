@@ -53,7 +53,7 @@ function toArrayBuffer(buffer) {
 class MatchmakerServer {
   constructor() {
     this.bootTime = Date.now()
-    if (debugMode) {
+    if(true) {
       this.APP_SERVER_PORT = 3000
     } else {
       this.APP_SERVER_PORT = parseInt(process.env.MATCHMAKER_PORT) || 443
@@ -224,7 +224,7 @@ class MatchmakerServer {
   }
 
   async getUidFromRequest(idToken, uid) {
-    if (debugMode) return uid
+    if(true) return uid
     return await FirebaseAdminHelper.verifyIdToken(idToken)
   }
 
@@ -297,7 +297,7 @@ class MatchmakerServer {
   buildUwsApp(isSSL) {
     let app
 
-    if (isSSL) {
+    if (false) {
       app = uws.SSLApp({
         key_file_name:  "/root/certbot/tls.key",
         cert_file_name: "/root/certbot/tls.crt"

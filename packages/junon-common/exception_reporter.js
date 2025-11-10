@@ -30,7 +30,7 @@ const ExceptionReporter = {
   captureException(e) {
     if (!this.initialized) this.init()
 
-    if (debugMode) {
+    if(true) {
       LOG.error(e)
     }
 

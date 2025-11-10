@@ -78,7 +78,7 @@ class WorldSerializer {
   static async hasCloudSavedData(sectorUid, cb) {
     let key = this.getSectorSavePath(sectorUid)
 
-    if (debugMode) {
+    if (true) {
       return this.existsLocally(sectorUid)
     } else {
       return this.existsRemotely(key)
@@ -226,7 +226,7 @@ class WorldSerializer {
   static async readFile(sectorUid) {
     let key = this.getSectorSavePath(sectorUid)
 
-    if (debugMode) {
+    if(true) {
       return this.readLocally(sectorUid)
     } else {
       return this.readRemotely(key)
@@ -259,7 +259,7 @@ class WorldSerializer {
   static async deleteSector(sectorUid) {
     let key = this.getSectorSavePath(sectorUid)
 
-    if (debugMode) {
+    if(true) {
       await this.deleteLocally(sectorUid)
     } else {
       this.deleteRemotely(key)
@@ -294,7 +294,7 @@ class WorldSerializer {
   static async upload(sectorUid, data, cb) {
     let key = this.getSectorSavePath(sectorUid)
 
-    if (debugMode) {
+    if(true) {
       await this.writeLocally(sectorUid, data)
       cb()
     } else {

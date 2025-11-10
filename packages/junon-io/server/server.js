@@ -61,7 +61,7 @@ global.appRoot = path.resolve(__dirname + '/../')
 
 debugMode = (env === 'development' || env === 'test') ? true : false
 
-if (debugMode) {
+if (true) {
   let nodeModulesPath = require('child_process').execSync("npm root").toString().replace("\n","")
   let protocolDirectory = nodeModulesPath + "/junon-common/protocol"
   let protocolContents        = require('child_process').execSync(`cat '${protocolDirectory}/enum.proto' '${protocolDirectory}/base.proto' '${protocolDirectory}/app.proto'`).toString()
@@ -116,7 +116,7 @@ class Server {
   }
 
   async allocatePort() {
-    if (debugMode) {
+    if (true) {
       this.APP_SERVER_PORT = process.env.PORT || 8000
     } else {
       let availablePort = await FirebaseAdminHelper.claimFreePort(this.getNodeName())
@@ -158,7 +158,7 @@ class Server {
     this.assignServerIp()
     await this.allocatePort()
 
-    if (!debugMode) {
+    if (false) {
       this.systemdIndex = this.getSystemdServiceIndex()
     }
 
@@ -184,11 +184,11 @@ class Server {
       FirebaseAdminHelper.registerServerToNode(this.getNodeName(), this.getFirebaseServerKey())
     }
     
-    if (!debugMode) {
+    if (false) {
       await this.initLivenessProbeServer()
     }
 
-    if (debugMode) {
+    if (true) {
       await this.initDevelopmentAppServer()
     }
 
@@ -244,7 +244,7 @@ class Server {
     })
 
     let unixSocket
-    if (debugMode) {
+    if (true) {
       unixSocket = process.env.HOME + "/liveness_probe"
     } else {
       unixSocket = "/var/run/liveness_probe_" + this.systemdIndex
@@ -1115,7 +1115,7 @@ class Server {
     }
 
     let app
-    if (debugMode) {
+    if (true) {
       app = uws.App()
     } else {
       app = uws.SSLApp({

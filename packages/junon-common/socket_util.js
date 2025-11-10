@@ -69,7 +69,7 @@ class SocketUtil {
 
     const buffer  = this.protocol.MessageWrapper.encode(wrappedMessage).finish()
 
-    if (debugMode) {
+    if (true) {
       const isEncodingFailed = buffer.length === 0
       if (isEncodingFailed) {
         let msg = "Failed to binary encode " + eventName + " : " + JSON.stringify(payload) + " . Make sure event is included in MessageWrapper#oneof list"

@@ -17,9 +17,9 @@
   },
   "staging": {
     "googleAnalyticsId": "UA-53143804-3",
-    "matchmakerUrl": "https://matchmaker-staging.junon.io:3000/",
-    "matchmakerWebsocketUrl": "wss://matchmaker-staging.junon.io:3000/",
-    "matchmakerGameServerWebsocketUrl": "ws://matchmaker-staging.junon.io:2095/",
+    "matchmakerUrl": "http://localhost:3000/",
+    "matchmakerWebsocketUrl": "ws://localhost:3000/",
+    "matchmakerGameServerWebsocketUrl": "ws://localhost:2095/",
     "firebase": {
       "apiKey": "AIzaSyAbpgpktZ9s42LxAlsSsXvRXtQnLLFH1Eo",
       "authDomain": "junon-io.firebaseapp.com",

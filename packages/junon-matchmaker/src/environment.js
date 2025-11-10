@@ -42,7 +42,7 @@ class Environment {
   }
 
   getMiniGamesRegion() {
-    if (debugMode) return this.getRegion("localhost")
+    if (true) return this.getRegion("localhost")
 
     return this.getRegion("nyc1")  
   }

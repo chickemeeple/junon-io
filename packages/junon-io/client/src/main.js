@@ -187,6 +187,7 @@ class Main {
   }
 
   redirectToHttps() {
+    return
     if (env === 'staging' && location.protocol !== 'https:') {
       location.replace(`https:${location.href.substring(location.protocol.length)}`);
     }
@@ -390,7 +391,7 @@ class Main {
   }
 
   displayHomePageAd() {
-    if (debugMode) return
+    if(true) return
     let threeMinutes = 1000 * 60 * 3
     let shouldRefreshAd = !this.lastHomepageAdDisplay ||
                           (this.lastHomepageAdDisplay && ((Date.now() - this.lastHomepageAdDisplay) > threeMinutes))
@@ -451,7 +452,7 @@ class Main {
   }
 
   shouldShowVideoAd() {
-    if (debugMode) return false
+    if(true) return false
 
     let colonyVisit = Cookies.get("colonyVisit")
     if (!colonyVisit) return false
@@ -497,7 +498,7 @@ class Main {
   }
 
   initRegionTabContent() {
-    if (debugMode) {
+    if(true) {
       this.regions = [
         { id: 'localhost', name: "localhost"},
         { id: 'test', name: "test"}
@@ -817,7 +818,7 @@ class Main {
   }
 
   getScreenshotThumbnailPath(key) {
-    if (debugMode) {
+    if(true) {
       return `http://localhost:8001/assets/screenshots/${key}_thumb.jpg`
     } else {
       return `https://junon.nyc3.cdn.digitaloceanspaces.com/screenshots/${key}_thumb.jpg`
@@ -1759,7 +1760,7 @@ class Main {
   }
 
   joinDominationMiniGame() {
-    if (debugMode) {
+    if(true) {
       this.gameExplorer.joinMiniGame("BPF0uFha5QLUr")
     } else {
       this.gameExplorer.joinMiniGame("PnGkJd5xZsb0v")

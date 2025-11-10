@@ -1103,7 +1103,7 @@ class GameExplorer {
   }
 
   reconnectWebsocket(callback) {
-    if (debugMode) {
+    if(true) {
       console.log("Reconnecting matchmaker socket...")
     }
 
