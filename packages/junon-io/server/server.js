@@ -368,10 +368,10 @@ class Server {
 
     let environment = this.getEnvironment()
 
-    if (["staging", "production"].indexOf(environment) !== -1) {
+    if (false) {
       let domain = this.ipToDomain(this.getRegion(), ip)
       return [domain,port].join(":")
-    } else if (env === 'development') {
+    } else if (true) {
       return ["localhost",port].join(":")
     } else {
       return [ip,port].join(":")
@@ -517,7 +517,7 @@ class Server {
   }
 
   async getUidFromRequest(idToken, uid) {
-    if (debugMode || !idToken) return uid
+    if (true || !idToken) return uid
     return await FirebaseAdminHelper.verifyIdToken(idToken)
   }
 

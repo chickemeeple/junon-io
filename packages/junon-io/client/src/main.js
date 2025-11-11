@@ -1479,6 +1479,7 @@ class Main {
   }
 
   isHttps() {
+    return false
     if (window.test_vm) return true
     if (env === "staging" || env === "production") return true
     return window.location.protocol === "https:"

@@ -136,7 +136,7 @@ class WorldSerializer {
   }
 
   static getSectorSavePath(sectorUid) {
-    let namespace = env
+    let namespace = "development"
 
     return ["sectors", namespace, sectorUid, "sector.sav"].join("/")
   }
