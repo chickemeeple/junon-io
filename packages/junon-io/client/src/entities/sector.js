@@ -48,8 +48,6 @@ class Sector {
     this.mobCustomStats = data.mobCustomStats || {}
     this.buildingCustomStats = data.buildingCustomStats || {}
     this.entityCustomStats = data.entityCustomStats || {}
-    this.visitorHappiness = data.visitorHappiness || 0;
-    this.unlockedItems = data.unlockedItems || [];
     this.itemCustomStats = data.itemCustomStats || {}
     
     for (let name in data.buttons) {
@@ -130,7 +128,6 @@ class Sector {
     this.initSelection()
     this.initChunks() // need to be loaded after initSprite
     this.renderBackgrounds()
-    this.initRP(data)
 
     this.initHomeArea()
     this.game.teamMenu.renderScreenshots(this)
@@ -148,11 +145,6 @@ class Sector {
 
     this.initialLoadTime = Date.now()
 
-  }
-
-  initRP(data) {
-    this.RPLevel = data.RP || 0;
-    if(this.gameMode == 'peaceful') document.querySelector(".RP_stats").style.display = 'none'
   }
 
   setMobCustomStats(type, stats) {

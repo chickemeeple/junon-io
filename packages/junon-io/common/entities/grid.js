@@ -101,7 +101,7 @@ class Grid {
     return this.isOccupied(x, y, width, height, checkFull)
   }
 
-  isOccupied(x, y, width, height, checkFull = false, includeWalls = (this.name === "wall")) {
+  isOccupied(x, y, width, height, checkFull = false, includeWalls = false) {
     let isOneBlock = (width === this.tileSize && height === this.tileSize)
 
     if (isOneBlock) {

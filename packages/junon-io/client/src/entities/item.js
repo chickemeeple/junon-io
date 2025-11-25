@@ -7,8 +7,7 @@ const Drinks = require("./drinks/index")
 const Ammos = require("./ammos/index")
 const Terrains = require("./terrains/index")
 const Helper = require("./../../../common/helper")
-const Protocol = require("./../../../common/util/protocol");
-const BaseEntity = require("./base_entity");
+const Protocol = require("./../../../common/util/protocol")
 
 class Item {
 
@@ -84,11 +83,6 @@ class Item {
     return this.getKlass(type)
   }
 
-  /**
-   * 
-   * @param {number} type 
-   * @returns {BaseEntity}
-   */
   static getKlass(type) {
     let klass = Buildings.forType(type)
     if (klass) return klass

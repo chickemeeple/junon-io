@@ -38,9 +38,9 @@ class Planner {
     let result
     this.sector.findOneChunkRegionUntil(this.entity.getChunkRegion(), {
       breakCondition: (chunkRegion) => {
-        let source = chunkRegion.getWaterSource(this.entity.owner)
-        if (source) result = source
-        return source
+        let storage = chunkRegion.getWaterSource(this.entity.owner)
+        if (storage) result = storage
+        return storage
       },
       neighborStopCondition: () => { return false }
     })
@@ -48,18 +48,18 @@ class Planner {
     return result
   }
 
-  getClosestSuitStation() {
+  getClosestWaterSource() {
     let result
     this.sector.findOneChunkRegionUntil(this.entity.getChunkRegion(), {
       breakCondition: (chunkRegion) => {
-        let station = chunkRegion.getSuitStation(this.entity.owner)
-        if(station) result = station
-        return station
+        let storage = chunkRegion.getWaterSource(this.entity.owner)
+        if (storage) result = storage
+        return storage
       },
       neighborStopCondition: () => { return false }
     })
 
-    return result;
+    return result
   }
 
   getClosestCorpse() {
@@ -117,82 +117,6 @@ class Planner {
     })
 
     return stove
-  }
-
-  getClosestBuildingType(buildingType) {
-    let result;
-    this.sector.findOneChunkRegionUntil(this.entity.getChunkRegion(), {
-      breakCondition: (chunkRegion) => {
-        let building = chunkRegion.getBuildingType(this.entity.owner, buildingType)
-        if(building) result = building
-        return building
-      },
-      neighborStopCondition: () => { return false }
-    })
-
-    return result;
-  }
-
-  getClosestBarTable() {
-    let result
-    this.sector.findOneChunkRegionUntil(this.entity.getChunkRegion(), {
-      breakCondition: (chunkRegion) => {
-        let table = chunkRegion.getBarTable(this.entity.owner)
-        if(table) result = table
-        return table
-      },
-      neighborStopCondition: () => { return false }
-    })
-
-    return result;
-  }
-
-  handleUseTerminal() {
-    let success
-    let terminal = this.getClosestBuildingType(Protocol.definition().BuildingType.Terminal)
-    if(!terminal) return;
-
-    success = this.perform("SeekBarTable", {
-      targetEntity: terminal,
-      onComplete: () => {
-        this.entity.Happiness.changeHappinessForEvent("useTerminal")
-      }
-    })
-  }
-  handleBarTable() {
-    let success
-    if(this.entity.getHandItem()?.type === Protocol.definition().BuildingType.Beer) {
-      let barTable = this.getClosestBarTable()
-      if(!barTable) return;
-      success = this.perform("SeekBarTable", {
-        targetEntity: barTable,
-        onComplete: () => {
-          this.perform("Drink", {})
-        }
-      })
-      return;
-    } else {
-      let missingIngredients = this.getMissingIngredients({Beer: 1})
-      let storages = this.getStoragesWithIngredient(this.entity.getChunkRegion(), missingIngredients)
-      if(!Object.keys(storages).length) return;
-      let storage = storages[Object.keys(storages)[0]].storage
-      
-            
-      success = this.returnCurrentItemUnless("food_ingredient", () => {
-        return this.perform("SeekIngredient", {
-          targetEntity: storage,
-          onComplete: (storage) => {
-            this.perform("Pickup", {
-              storage: storage,
-              itemType: Protocol.definition().BuildingType.Beer,
-              count: 1
-            })
-          }
-        })
-      })
-    }
-
-    return success
   }
 
   getClosestMiner(options = {}) {
@@ -488,7 +412,6 @@ class Planner {
   }
 
   execute() {
-    // if(this.entity.type == Protocol.definition().MobType["Visitor"]) return //visitors dont plan like slaves do
     if (this.isPlanning) return
 
     this.isPlanning = true
@@ -502,7 +425,6 @@ class Planner {
   }
 
   executeAsync() {
-    let isVisitor = this.entity.constructor.name === "Visitor"
     this.isPlanning = false
     let success
 
@@ -523,19 +445,19 @@ class Planner {
       }
     }
 
-    if (this.isHungry() && !isVisitor) {
+    if (this.isHungry()) {
       success = this.handleHunger()
       if (success) return
     }
 
-    if (this.isSleepy() && !isVisitor) {
+    if (this.isSleepy()) {
       success = this.handleSleep()
       if (success) return
     }
 
     let canWork = this.entity.hunger > 0 && this.entity.stamina > 0
 
-    if (canWork && !isVisitor) {
+    if (canWork) {
       let tasks = this.getTasks()
       for (var i = 0; i < this.taskOrder.length; i++) {
         let order = this.taskOrder[i]
@@ -550,7 +472,7 @@ class Planner {
     if (success) return
 
     // nothing to do, return anything u have on hand
-    success = !isVisitor && this.returnCurrentItemUnless(null, () => {})
+    success = this.returnCurrentItemUnless(null, () => {})
 
     return success
   }
@@ -962,48 +884,6 @@ class Planner {
     return success
   }
 
-  handleOxygen(takeOff) {
-    let success;
-    if(takeOff) {
-      let suitStation = this.getClosestSuitStation();
-      if(!suitStation && this.entity.getArmorItem()) {
-        if(this.sentSuitMessage) return;
-        this.sector.game.server.socketUtil.broadcast(this.sector.getSocketIds(), "ErrorMessage", {message: "A visitor wants to take off their suit."})
-        this.sentSuitMessage = true;
-        return;
-      }
-
-      if(!suitStation) return;
-
-      success = this.perform("SeekSuitStation", {
-        targetEntity: suitStation, 
-        onComplete: () => {
-          this.perform("ChangeSuit", {
-            suitStation: suitStation,
-            takeOff: true
-          }); 
-        }
-      }) 
-    } else {
-      if(!this.suitStation && this.entity.suitStationId) {
-        this.suitStation = this.game.getEntity(this.entity.suitStationId)
-      }
-      if(this.suitStation) {
-        success = this.perform("SeekSuitStation", {
-          targetEntity: this.suitStation,
-          onComplete: () => {
-            this.perform("ChangeSuit", {
-              suitStation:this.suitStation,
-              takeOff:false
-            })
-         }
-        })
-      } 
-    }
-   
-    return success;
- }
-
   handleHunger() {
     let success
 
@@ -1043,7 +923,6 @@ class Planner {
   }
 
   perform(actionName, options = {}) {
-    // if(!this.currentAction || !this.currentAction.isCompleted) return;
     let actionKlass = Actions[actionName]
     if (!actionKlass) {
       this.game.captureException(new Error("Invalid actionName: " + actionName))

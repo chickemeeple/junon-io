@@ -1059,11 +1059,7 @@ class BaseEntity extends BaseTransientEntity {
   }
 
   canDamageWalls() {
-    try {
-      return this.getConstants().canDamageWalls
-    } catch (error) { //raids have trouble with this.
-      return true;
-    }
+    return this.getConstants().canDamageWalls
   }
 
   getBodyVelocity() {
