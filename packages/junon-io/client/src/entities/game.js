@@ -259,7 +259,7 @@ class Game {
 
     if (this.isMobile()) {
       this.createMobileBuildActionMenu()
-      document.querySelector("#base_hud .resources").style.display = 'none'
+      document.querySelector("#base_hud").style.display = 'none'
     }
   }
 
@@ -1582,7 +1582,12 @@ class Game {
   }
 
   onShowChatBubble(data) {
+    if(!data.message || !data.entityId) return
 
+    let entity = this.sector.getEntity(data.entityId);
+    if(!entity) return;
+
+    entity.createChatBubble(data.message)
   }
 
   onItemUnlocked(data) {

@@ -15,7 +15,8 @@ const Equipments = require("./../equipments/index")
 const Item = require("./../item")
 const Needs  = require("./../../../../common/interfaces/needs")
 const Protocol = require("./../../../../common/util/protocol")
-const BitmapText = require("../../util/bitmap_text")
+const BitmapText = require("../../util/bitmap_text");
+const helper = require('./../../../../common/helper');
 
 class BaseMob extends BaseEntity {
   constructor(game, data) {
@@ -870,7 +871,56 @@ var tween = new TWEEN.Tween(position)
     if (this.isLivestock) {
       stats += this.getLivestockStat()
     }
-    
+
+    if(this.shouldShowHappiness()) {
+      if(!this.eventDefinitions) return;
+      if(!this.positiveHappiness) {
+        this.positiveHappiness = {};
+        this.negativeHappiness = {};
+
+        for (let event in Constants.visitorEvents) {
+          if (Constants.visitorEvents[event] > 0) this.positiveHappiness[event] = Constants.visitorEvents[event];
+          else this.negativeHappiness[event] = Constants.visitorEvents[event];
+          
+        }
+      }
+
+
+      let positiveHappinessHtml = ""
+      for(let happinessEvent in this.positiveHappiness) {
+        let pretty = happinessEvent.replace(/[\w]([A-Z])/g, function(c) {
+          return c[0] + " " + c[1]
+        })
+        pretty = helper.capitalizeWords(pretty);
+        let shouldShowColor = ''
+        if(!this.eventDefinitions[happinessEvent]) shouldShowColor = "style=\"color:green\""
+        positiveHappinessHtml += `<span ${shouldShowColor} "id="${happinessEvent}">${pretty}: ${this.positiveHappiness[happinessEvent]}\n</span><br/>`
+      }
+      let negativeHappinessHtml = ""
+      for (let happinessEvent in this.negativeHappiness) {
+        let pretty = happinessEvent.replace(/[\w]([A-Z])/g, function(c) {
+          return c[0] + " " + c[1]
+        });
+        pretty = helper.capitalizeWords(pretty);
+        let shouldShowColor = ''
+        if(!this.eventDefinitions[happinessEvent]) shouldShowColor = "style=\"color:red\""
+        negativeHappinessHtml += `<span ${shouldShowColor} id="${happinessEvent}">${pretty}: ${this.negativeHappiness[happinessEvent]}</span><br/>`
+      }
+      let html = 
+      `<div class='entity_stats_entry'>
+          <div class='positive_happiness_events'>
+            <h3 class="happiness_header">happy:</h3>
+            ${positiveHappinessHtml}
+          </div>
+          <div class='negative_happiness_events'>
+            <h3 class="happiness_header">sad:</h3>
+            ${negativeHappinessHtml}
+          </div>
+       </div>
+      `
+
+      stats += html
+    } 
     if (this.getConstants().shouldShowNeeds) {
       let barWidthPercent = Math.floor(this.hunger / this.getMaxHunger() * 100)
 
@@ -924,7 +974,14 @@ var tween = new TWEEN.Tween(position)
       stats += goals
     }
 
+
+    
+
     entityMenu.querySelector(".entity_stats").innerHTML = stats
+  }
+
+  shouldShowHappiness() {
+    return false;
   }
 
   shouldShowOwner() {

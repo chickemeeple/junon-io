@@ -676,6 +676,38 @@
     "SlaveTraderArrived": "slave_trade_arrived",
     "MeteorShower": "meteor_shower"
   },
+  "visitorEvents": {
+    "findColoredLights": 10,
+    "findPottedPlants": 10,
+    "damaged": -25,
+    "killed": -80,
+    "stepOnDirt": -5,
+    "stepOnBlood": -5,
+    "stepOnCarpet": 5,
+    "takeOffSuit": 35,
+    "noOxygen": -5,
+    "drinkBeer": 20,
+    "eatSlimyMeatPizza": 10,
+    "useTerminal": 10,
+    "noTable": -5,
+    "miasma": -10
+  },
+  "visitorDialogues": {
+    "findColoredLights": "Oh… these lights are kinda nice. Didn't expect that.",
+    "findPottedPlants": "Huh. Someone's been taking care of these plants… recently, too.",
+    "damaged": "Ow— that actually hurt!",
+    "killed": "",
+    "stepOnDirt": "Why is there dirt everywhere? This place needs maintenance.",
+    "stepOnBlood": "That's… definitely blood. Great.",
+    "stepOnCarpet": "Soft carpet? Finally something pleasant around here.",
+    "takeOffSuit": "Ugh, finally. I can breathe a bit.",
+    "noOxygen": "W'wait… oxygen levels are dropping…",
+    "drinkBeer": "Ahh… alright, that hits the spot.",
+    "eatSlimyMeatPizza": "This pizza is… weirdly slimy. But kinda tasty?",
+    "useTerminal": "A terminal! I haven't seen one of these things in a while.",
+    "noTable": "Really? Not even a table to put things on?",
+    "miasma": "There's something foul in the air… feels wrong."
+  },
   "FloorTextures": {
     "solid_texture":       { "index": 1 },
     "cornered_texture":    { "index": 2 },
@@ -920,10 +952,10 @@
       },
       "dizzySprite": {
         "position": {
-          "x":0,
-          "y":-10,
-          "rotation":90
+          "x":30,
+          "y":20
         },
+        "rotation": 90,
         "width":20,
         "height":5,
         "tint":"#000000"
