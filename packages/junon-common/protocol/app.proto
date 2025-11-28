@@ -85,7 +85,7 @@ message EventDefinitions {
   uint32 findPottedPlants = 2;
   uint32 eatSlimyMeatPizza = 3;
   uint32 useTerminal = 4;
-  uint32 drinkBeer = 5;
+  uint32 drinkBeerAtBarTable = 5;
   uint32 stepOnCarpet = 6;
   uint32 takeOffSuit = 7;
   int32  damaged = 8;

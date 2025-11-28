@@ -28,7 +28,7 @@ class Eat extends BaseAction {
   onDrinkingFinished(drink, entity) {
     drink.use(entity)
     entity.setDormant(false)
-    entity.Happiness.changeHappinessForEvent("drinkBeer")
+    entity.Happiness.changeHappinessForEvent("drinkBeerAtBarTable")
     this.complete()
   }
 
