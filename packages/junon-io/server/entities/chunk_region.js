@@ -249,6 +249,19 @@ class ChunkRegion {
     return result
   }
 
+  getPoweredBuildingType(owner, buildingType) {
+    let result;
+
+    this.forEachStructureUntil((structure) => {
+      if(buildingType === structure.type && structure.isPowered) {
+        result = structure;
+        return true;
+      }
+    })
+
+    return result
+  }
+  
   getBuildingType(owner, buildingType) {
     let result;
 

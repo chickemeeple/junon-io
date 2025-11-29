@@ -119,6 +119,22 @@ class Planner {
     return stove
   }
 
+  getClosestPoweredTerminal() {
+    let result;
+    let buildingType = Protocol.definition().BuildingType["Terminal"]
+
+    this.sector.findOneChunkRegionUntil(this.entity.getChunkRegion(), {
+      breakCondition: (chunkRegion) => {
+        let terminal = chunkRegion.getPoweredBuildingType(this.entity.owner, buildingType)
+        if(terminal) result = terminal
+        return terminal
+      },
+      neighborStopCondition: () => { return false }
+    })
+
+    return result;
+  }
+
   getClosestBuildingType(buildingType) {
     let result;
     this.sector.findOneChunkRegionUntil(this.entity.getChunkRegion(), {
@@ -149,7 +165,7 @@ class Planner {
 
   handleUseTerminal() {
     let success
-    let terminal = this.getClosestBuildingType(Protocol.definition().BuildingType.Terminal)
+    let terminal = this.getClosestPoweredTerminal()
     if(!terminal) return;
 
     success = this.perform("SeekBarTable", {
